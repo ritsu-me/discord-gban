@@ -1,8 +1,9 @@
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, Collection } = require('discord.js');
 const client = new Client({
     intents: Object.values(GatewayIntentBits).reduce((a, b) => a | b)
 });
 const Keyv = require('keyv')
+const fs = require("fs")
 const lang = new Keyv('sqlite://db.sqlite', { table: 'lang' })
 const config = require("./config.js")
 const functions = require("./functions.js")
@@ -25,11 +26,33 @@ client.once("ready", () => {
             .setTimestamp()
         ]
     })
-    lang.on('error', err => console.error('Keyv connection error:', err))
+    lang.on('error', err => console.error('Keyv connection error:', err));
+    
 });
 
 client.on("guildCreate", (guild) => {
     guild.systemChannel.send()
+})
+
+client.on("interactionCreate", async (interaction) => {
+    if (interaction.isChatInputCommand()){
+        const { commandName } = interaction
+        if (commandName === "ping"){
+            const now = Date.now()
+            const text = `pong!\n\ngateway:${client.ws.ping}ms`
+            await interaction.reply({
+                content: text,
+                ephemeral: true
+            })
+            return interaction.editReply(`${text}\n往復:${Date.now() - now}ms`)
+        } else if (commandName === "hello"){
+            const lang = {
+                ja: (name) => `こんにちは、${name}さん。`,
+                en: (name) => `Hello, ${name}!`
+            }
+            return interaction.reply(lang[interaction.options.getString("language")](interaction.member?.displayName || interaction.user.username))
+        }
+    }
 })
 
 process.on("uncaughtException", error => {

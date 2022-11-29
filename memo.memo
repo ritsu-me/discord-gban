@@ -1,0 +1,22 @@
+client.application.commands.create(
+        new Collection(
+            {
+                name: "Ping",
+                description: "Ping値を表示します。",
+                options: {
+                    name: "Pingの種類",
+                    description: "Pingの種類を選べます。",
+                    choices: [
+                        {
+                            name: "Websocket Ping",
+                            description: "Websocket Pingの値を表示します。"
+                        },
+                        {
+                            name: "API Endpoint Ping",
+                            description: "API Endpoint Pingの値を表示します。"
+                        }
+                    ]
+                }
+            }
+        )
+    )

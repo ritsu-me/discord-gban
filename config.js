@@ -6,6 +6,11 @@ module.exports = {
             "success": "",
             "duplicate": ""
         },
-        "joex": ""
+        "joex": "",
+        "command": "1046959385877958677"
+    },
+    "clientID": "1042330642530181140",
+    "dev": {
+        "testGuild": "1040877393017045022"
     }
 }
