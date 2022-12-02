@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "@discordjs/builders": "^1.4.0",
+    "@discordjs/rest": "^1.4.0",
+    "@keyv/sqlite": "^3.6.3",
+    "discord-api-types": "^0.37.20",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "eslint": "^8.28.0",
+    "fs": "^0.0.1-security",
+    "keyv": "^4.5.2",
+    "mongoose": "^6.7.5"
+  }
+}
