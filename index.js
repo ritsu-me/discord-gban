@@ -20,6 +20,7 @@ client.once("ready", () => {
             .setTimestamp()
         ]
     })
+    client.user.setActivity('Setting up GBAN function...', { type: 'PLAYING' });
     lang.on('error', err => console.error('Keyv connection error:', err));
     
 });
@@ -75,6 +76,21 @@ client.on("interactionCreate", async (interaction) => {
                     )
                     .setColor("#2f3136")
                     .setTimestamp()
+                ],
+                components: [
+                    new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                        .setLabel("Confirm")
+                        .setStyle(ButtonStyle.Success)
+                        .setCustomId("ok")
+                    )
+                    .addComponents(
+                        new ButtonBuilder()
+                        .setLabel("Discard")
+                        .setStyle(ButtonStyle.Danger)
+                        .setCustomId("ng")
+                    )
                 ]
             })
         } else if (commandName === "hello"){
