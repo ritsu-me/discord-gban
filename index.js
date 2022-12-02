@@ -32,7 +32,6 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.isChatInputCommand()) {
         const { commandName } = interaction
         if (commandName === "ping"){
-            const now = Date.now()
             const apiPing = Date.now() - interaction.createdTimestamp
             await interaction.reply({
                 embeds: [
