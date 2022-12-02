@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, EmbedBuilder, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const client = new Client({
     intents: Object.values(GatewayIntentBits).reduce((a, b) => a | b)
 });
@@ -17,12 +17,6 @@ client.once("ready", () => {
             .setTitle("起動完了")
             .setDescription("> Botが起動しました。\n> 運営担当者は動作チェックをお願いします。")
             .setColor("#2f3136")
-            .addFields(
-                {
-                    name: "WebSocket Ping",
-                    value: "`" + client.ws.ping + "ms`"
-                }
-            )
             .setTimestamp()
         ]
     })
@@ -35,23 +29,91 @@ client.on("guildCreate", (guild) => {
 })
 
 client.on("interactionCreate", async (interaction) => {
-    if (interaction.isChatInputCommand()){
+    if (interaction.isChatInputCommand()) {
         const { commandName } = interaction
         if (commandName === "ping"){
             const now = Date.now()
-            const text = `pong!\n\ngateway:${client.ws.ping}ms`
+            const apiPing = Date.now() - interaction.createdTimestamp
             await interaction.reply({
-                content: text,
-                ephemeral: true
+                embeds: [
+                    new EmbedBuilder()
+                    .setTitle(":ping_pong:Pong!")
+                    .setDescription("Here's your pings!!")
+                    .addFields(
+                        {
+                            name: ":electric_plug:WebSocket Ping",
+                            value: "`" + client.ws.ping + "ms`"
+                        },
+                        {
+                            name: ":yarn:API Endpoint Ping",
+                            value: "`" + apiPing + "ms`"
+                        }
+                    )
+                    .setColor("#2f3136")
+                    .setTimestamp()
+                ]
             })
-            return interaction.editReply(`${text}\n往復:${Date.now() - now}ms`)
+            return interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                    .setTitle(":ping_pong:Pong!")
+                    .setDescription("Here's your pings!!")
+                    .addFields(
+                        {
+                            name: ":electric_plug:WebSocket Ping",
+                            value: "`" + client.ws.ping + "ms`",
+                            inline: true
+                        },
+                        {
+                            name: ":yarn:API Endpoint Ping",
+                            value: "`" + apiPing + "ms`",
+                            inline: true
+                        },
+                        {
+                            name: "WebSocket Latency",
+                            value: "`" + client.ws.ping*2 + "ms`"
+                        }
+                    )
+                    .setColor("#2f3136")
+                    .setTimestamp()
+                ]
+            })
         } else if (commandName === "hello"){
             const lang = {
                 ja: (name) => `こんにちは、${name}さん。`,
                 en: (name) => `Hello, ${name}!`
             }
             return interaction.reply(lang[interaction.options.getString("language")](interaction.member?.displayName || interaction.user.username))
+        } else if (commandName === "register") {
+            interaction.reply({//サーバー追加時にメッセージ送信
+                embeds: [
+                    new EmbedBuilder()
+                    .setTitle("Thank you for using GBAN!!")
+                    .setDescription(":flag_us:Please select language that you want to use in this Bot.\n:flag_jp:このBotで使用したい言語を選んでください。")
+                    .setColor("#2f3136")
+                ],
+                components: [
+                    new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('en')
+                            .setLabel('English')
+                            .setStyle(ButtonStyle.Primary)
+                    ).addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('jp')
+                            .setLabel('日本語')
+                            .setStyle(ButtonStyle.Primary)
+                    )
+                ],
+                ephemeral: true
+            })
         }
+    } else if (interaction.isButton()) {
+        interaction.reply({
+            content: "おん",
+            ephemeral: true
+        })
     }
 })
 

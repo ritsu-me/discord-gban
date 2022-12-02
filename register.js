@@ -5,8 +5,8 @@ require("dotenv").config();
 
 const ping = new SlashCommandBuilder()
     .setName('ping')
-    .setDescription('pong!')
-    
+    .setDescription('pong!');
+
 const hello = new SlashCommandBuilder()
     .setName('hello')
     .setDescription('挨拶をします。')
@@ -21,7 +21,12 @@ const hello = new SlashCommandBuilder()
             )
     );
 
+const register = new SlashCommandBuilder()
+    .setName("register")
+    .setDescription("登録パネルを送信します。[管理者コマンド]")
+
 const commands = [ping, hello]
+const adminCmd = [register]
 
 //登録用関数
 const { REST } = require('@discordjs/rest');
@@ -31,6 +36,10 @@ async function main(){
     await rest.put(
         Routes.applicationCommands(config.clientID),
         { body: commands }
+    );
+    await rest.put(
+        Routes.applicationGuildCommands(config.clientID, config.dev.testGuild),
+        { body: adminCmd }
     )
 }
 
