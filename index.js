@@ -132,6 +132,11 @@ client.on("interactionCreate", async (interaction) => {
     }
 })
 
+client.on("messageCreate", async (message) => {
+    if (!message.content.startsWith("#")) return
+    const [command, ...args] = message.content.slice(1).split(/\s+/)
+})
+
 process.on("uncaughtException", error => {
     console.error(`[${functions.timeToJST(Date.now(), true)}] ${error.stack}`);
     const embed = new EmbedBuilder()
