@@ -126,7 +126,7 @@ client.on("interactionCreate", async (interaction) => {
         }
     } else if (interaction.isButton()) {
         interaction.reply({
-            content: "おん",
+            content: "Button",
             ephemeral: true
         })
     }
