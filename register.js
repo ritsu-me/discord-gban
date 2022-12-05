@@ -22,8 +22,24 @@ const hello = new SlashCommandBuilder()
     );
 
 const register = new SlashCommandBuilder()
-    .setName("register")
-    .setDescription("登録パネルを送信します。[管理者コマンド]")
+    .setName("gban")
+    .setDescription("グローバルBAN機能の設定です。[管理者コマンド]")
+    .addStringOption(option =>
+        option
+            .setName("option")
+            .setDescription("GBANを使用するかしないか選択できます。")
+            .setRequired(true)
+            .setChoices(
+                {
+                    name: "使用する",
+                    value: "enable"
+                },
+                {
+                    name: "使用しない",
+                    value: "disable"
+                }
+            )
+        )
 
 const commands = [ping, hello]
 const adminCmd = [register]

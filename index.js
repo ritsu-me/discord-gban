@@ -99,30 +99,49 @@ client.on("interactionCreate", async (interaction) => {
                 en: (name) => `Hello, ${name}!`
             }
             return interaction.reply(lang[interaction.options.getString("language")](interaction.member?.displayName || interaction.user.username))
-        } else if (commandName === "register") {
-            interaction.reply({//サーバー追加時にメッセージ送信
-                embeds: [
-                    new EmbedBuilder()
-                    .setTitle("Thank you for using GBAN!!")
-                    .setDescription(":flag_us:Please select language that you want to use in this Bot.\n:flag_jp:このBotで使用したい言語を選んでください。")
-                    .setColor("#2f3136")
-                ],
-                components: [
-                    new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('en')
-                            .setLabel('English')
-                            .setStyle(ButtonStyle.Primary)
-                    ).addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('jp')
-                            .setLabel('日本語')
-                            .setStyle(ButtonStyle.Primary)
-                    )
-                ],
-                ephemeral: true
-            })
+        } else if (commandName === "gban") {
+            const choice = interaction.options.getString("option");
+            if (choice == "enable") {
+                interaction.reply({
+                    content: "enabled",
+                    components: [
+                        new ActionRowBuilder()
+                        .addComponents(
+                            new ButtonBuilder()
+                            .setLabel("Confirm")
+                            .setStyle(ButtonStyle.Success)
+                            .setCustomId("ok")
+                        )
+                        .addComponents(
+                            new ButtonBuilder()
+                            .setLabel("Discard")
+                            .setStyle(ButtonStyle.Danger)
+                            .setCustomId("ng")
+                        )
+                    ],
+                    ephemeral: true
+                })
+            } else if (choice == "disable") {
+                interaction.reply({
+                    content: "disabled",
+                    components: [
+                        new ActionRowBuilder()
+                        .addComponents(
+                            new ButtonBuilder()
+                            .setLabel("Confirm")
+                            .setStyle(ButtonStyle.Success)
+                            .setCustomId("ok")
+                        )
+                        .addComponents(
+                            new ButtonBuilder()
+                            .setLabel("Discard")
+                            .setStyle(ButtonStyle.Danger)
+                            .setCustomId("ng")
+                        )
+                    ],
+                    ephemeral: true
+                })
+            }
         }
     } else if (interaction.isButton()) {
         interaction.reply({
