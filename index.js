@@ -4,7 +4,7 @@ const client = new Client({
 });
 const Keyv = require('keyv')
 const fs = require("fs")
-const lang = new Keyv('sqlite://db.sqlite', { table: 'lang' })
+const gbanConfig = new Keyv('sqlite://db.sqlite', { table: 'gbanConfig' })
 const config = require("./config.js")
 const functions = require("./functions.js")
 require("dotenv").config()
@@ -21,12 +21,12 @@ client.once("ready", () => {
         ]
     })
     client.user.setActivity('Setting up GBAN function...', { type: 'PLAYING' });
-    lang.on('error', err => console.error('Keyv connection error:', err));
+    gbanConfig.on('error', err => console.error('Keyv connection error:', err));
     
 });
 
 client.on("guildCreate", (guild) => {
-    guild.systemChannel.send()
+    guild.systemChannel.send("a")
 })
 
 client.on("interactionCreate", async (interaction) => {
@@ -81,15 +81,9 @@ client.on("interactionCreate", async (interaction) => {
                     new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                        .setLabel("Confirm")
-                        .setStyle(ButtonStyle.Success)
-                        .setCustomId("ok")
-                    )
-                    .addComponents(
-                        new ButtonBuilder()
-                        .setLabel("Discard")
+                        .setLabel("🗑️Delete")
                         .setStyle(ButtonStyle.Danger)
-                        .setCustomId("ng")
+                        .setCustomId("delete")
                     )
                 ]
             })
@@ -144,10 +138,46 @@ client.on("interactionCreate", async (interaction) => {
             }
         }
     } else if (interaction.isButton()) {
-        interaction.reply({
-            content: "Button",
-            ephemeral: true
-        })
+        if (interaction.customId == "delete") {
+            interaction.message.delete()
+        } else if (interaction.customId == "ok") {
+            const configData = gbanConfig.get(interaction.guildId)
+            if (!configData) {
+                try{
+                    gbanConfig.set(interaction.guildId, true)
+                }catch(err){
+                    console.error(err)
+                    client.channels.cache.get(config.log.error).send(err)
+                    //TODO:エラーメッセージ返信
+                    return;
+                }
+                client.channels.cache.get(config.log.register).send({
+                    embeds: []//TODO:成功ログ中身
+                })
+                //TODO:登録メッセージ返信
+            }
+        } else if (interaction.customId == "ng") {
+            const configData = gbanConfig.get(interaction.guildId)
+            if(!configData) {
+                try{
+                    gbanConfig.set(interaction.guildId, false)
+                }catch(err){
+                    console.error(err)
+                    client.channels.cache.get(config.log.error).send(err)
+                    //TODO:エラーメッセージ返信
+                    return;
+                }
+                client.channels.cache.get(config.log.register).send({
+                    embeds: []//TODO:成功ログ中身
+                })
+                //TODO:登録メッセージ返信
+            }
+        } else {
+            interaction.reply({
+                content: "Button",
+                ephemeral: true
+            })
+        }
     }
 })
 
