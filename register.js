@@ -4,11 +4,27 @@ const config = require("./config.js")
 require("dotenv").config();
 
 const ping = new SlashCommandBuilder()
-    .setName('ping')
-    .setDescription('pong!');
+.setName('ping')
+.setDescription('Ping値を出力します。[なし]');
+
+const gban = new SlashCommandBuilder()
+.setName("gban")
+.setDescription("ユーザーに対してグローバルBANを実行します。[Bot管理者専用コマンド]")
+.addStringOption(option =>
+    option
+    .setName("user_id")
+    .setDescription("GBANを実行するユーザーのIDを入力します。")
+    .setRequired(true)
+)
+.addStringOption(option =>
+    option
+    .setName("reason")
+    .setDescription("GBANを実行する理由を入力します。")
+    .setRequired(true)
+)
 
 const commands = [ping]
-const adminCmd = []
+const adminCmd = [gban]
 
 //登録用関数
 const { REST } = require('@discordjs/rest');

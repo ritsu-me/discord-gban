@@ -82,6 +82,46 @@ client.on("interactionCreate", async (interaction) => {
                     )
                 ]
             })
+        } else if (commandName == "gban") {//TODO:このコマンドのメッセージを整形
+            if (interaction.user.id == config.dev.developerID[0] || interaction.user.id == config.dev.developerID[1] || interaction.user.id == config.dev.developerID[2]) {
+                const inputID = interaction.options.getString("user_id");
+                if (inputID == interaction.user.id)return interaction.reply({
+                    content: "自分のことはBANできません",
+                    ephemeral: true
+                });
+                const inputReason = interaction.options.getString("reason")
+                const reason = client.user.tag + "が実行 | 理由:" + inputReason + " | 7日分のメッセージを同時に削除 | ©2022 DiscordHeiwaGroup"
+                if (inputID.match(/\d{10,20}/)) {
+                    try{
+                        client.guilds.cache.forEach(guilds => {
+                            guilds.members.ban(
+                                inputID, {reason: reason, days: 7}
+                            )
+                        })
+                    }catch(err){
+                        console.log(err)
+                        interaction.reply({
+                            content: err,
+                            ephemeral: true
+                        })
+                        return;
+                    }
+                    interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                            .setTitle("SUCCESSFULY GBANed!!")
+                            .setDescription("I've banned <@!" + inputID + ">\nReason for " + inputReason)
+                            .setColor("#2f3136")
+                            .setTimestamp()
+                        ]
+                    })
+                } else {
+                    interaction.reply({
+                        content: "ID doesn't matches \d{10,20}",
+                        ephemeral: true
+                    })
+                }
+            }
         }
     } else if (interaction.isButton()) {
         if (interaction.customId == "delete") {
