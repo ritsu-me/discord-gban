@@ -1,6 +1,6 @@
 # Discord Global-BAN Bot
 ---
-これはDiscordサーバー「平和同盟国」で作成している、ユーザーのGlobal-BANができるBotです。
+これはDiscordサーバー「平和同盟国」で作成している、ユーザーのGlobal-BANができるBotです。<br>
 BANを申請し、運営陣が承認をしたユーザーは適切な処理の元、Botが導入されているすべてのサーバーからBANされます。
 
 # Release
