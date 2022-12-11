@@ -83,7 +83,7 @@ client.on("interactionCreate", async (interaction) => {
                 ]
             })
         } else if (commandName == "gban") {//TODO:このコマンドのメッセージを整形
-            if (interaction.user.id == config.dev.developerID[0] || interaction.user.id == config.dev.developerID[1] || interaction.user.id == config.dev.developerID[2]) {
+            if (config.dev.developerID.includes(interaction.user.id) === true) {
                 const inputID = interaction.options.getString("user_id");
                 if (inputID == interaction.user.id)return interaction.reply({
                     content: "自分のことはBANできません",
