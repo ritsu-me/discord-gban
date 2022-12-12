@@ -129,7 +129,7 @@ client.on("interactionCreate", async (interaction) => {
         } else {
             interaction.reply({
                 content: "Button",
-                ephemeral: true
+                ephemeral: false
             })
         }
     }
