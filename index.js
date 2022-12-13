@@ -86,7 +86,7 @@ client.on("interactionCreate", async (interaction) => {
             if (config.dev.developerID.includes(interaction.user.id) === true) {
                 const inputID = interaction.options.getString("user_id");
                 if (inputID == interaction.user.id)return interaction.reply({
-                    content: "自分のことはBANできません",
+                    content: "自分のことはBANできません。",
                     ephemeral: true
                 });
                 const inputReason = interaction.options.getString("reason")
