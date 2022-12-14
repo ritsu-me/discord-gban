@@ -21,7 +21,7 @@ client.once("ready", () => {
 });
 
 client.on("guildCreate", (guild) => {
-    guild.systemChannel.send("a")
+    guild.systemChannel.send("test")
 })
 
 client.on("interactionCreate", async (interaction) => {
