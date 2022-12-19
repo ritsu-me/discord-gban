@@ -33,7 +33,7 @@ client.on("interactionCreate", async (interaction) => {
                 embeds: [
                     new EmbedBuilder()
                     .setTitle(":ping_pong:Pong!")
-                    .setDescription("Here's your pings!!")
+                    .setDescription("Ping値を表示します。")
                     .addFields(
                         {
                             name: ":electric_plug:WebSocket Ping",
@@ -52,7 +52,7 @@ client.on("interactionCreate", async (interaction) => {
                 embeds: [
                     new EmbedBuilder()
                     .setTitle(":ping_pong:Pong!")
-                    .setDescription("Here's your pings!!")
+                    .setDescription("Ping値を表示します。")
                     .addFields(
                         {
                             name: ":electric_plug:WebSocket Ping",
@@ -76,7 +76,7 @@ client.on("interactionCreate", async (interaction) => {
                     new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                        .setLabel("🗑️Delete")
+                        .setLabel("🗑️削除")
                         .setStyle(ButtonStyle.Danger)
                         .setCustomId("delete")
                     )
@@ -86,7 +86,11 @@ client.on("interactionCreate", async (interaction) => {
             if (config.dev.developerID.includes(interaction.user.id) === true) {
                 const inputID = interaction.options.getString("user_id");
                 if (inputID == interaction.user.id)return interaction.reply({
-                    content: "自分のことはBANできません。",
+                    embeds: [
+                        new EmbedBuilder()
+                        .setTitle("")
+                        ,setDescription("")
+                    ],
                     ephemeral: true
                 });
                 const inputReason = interaction.options.getString("reason")
